@@ -158,4 +158,4 @@ with SSHClient(ip_address='192.168.100.93', username='nenko', password='nenko900
     ssh_client.execute_command('ls')
     df_output = ssh_client.execute_command('df -hl')
     ssh_client.reboot()
-    ssh_client.shutdown()
+    # ssh_client.shutdown()
