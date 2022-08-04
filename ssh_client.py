@@ -27,9 +27,6 @@ class SSHClient(BaseClient):
     WRONG_PASSWORD_TIMEOUT = 5  # seconds
     BYTES_TO_READ = 1024
 
-    def __init__(self, ip_address: str, username: str, password: str):
-        super().__init__(ip_address=ip_address, username=username, password=password)
-
     def __enter__(self) -> SSHClient:
         """Creates the SSH client, logs in the host and returns the class instance upon entering
         the context manager"""
@@ -113,7 +110,7 @@ class SSHClient(BaseClient):
         str
             The output of the command as a string.
         """
-        stdin, stdout, stderr = self.client.exec_command(command)
+        _, stdout, _ = self.client.exec_command(command)
         # If the exit code is not 0, log an error message and raise an exception
         if stdout.channel.recv_exit_status():
             logging.error(
@@ -134,6 +131,8 @@ class SSHClient(BaseClient):
 
     def reboot(self):
         """Reboots the host."""
+        # Rebooting requires the password of the user, so the paramiko shell needs to be used,
+        # instead of execute_command
         self.shell.send(str.encode(f'{LinuxCommands.REBOOT.value}\n'))
         self._wait_for_shell_password_prompt()
         # Enter password
@@ -144,6 +143,8 @@ class SSHClient(BaseClient):
 
     def shutdown(self):
         """Shuts down the host."""
+        # Shutting down requires the password of the user, so the paramiko shell needs to be used,
+        # instead of execute_command
         self.shell.send(str.encode(f'{LinuxCommands.SHUTDOWN.value}\n'))
         self._wait_for_shell_password_prompt()
         # Enter password
@@ -154,7 +155,7 @@ class SSHClient(BaseClient):
 
 
 # Example calls
-with SSHClient(ip_address='192.168.100.93', username='nenko', password='nenko9000') as ssh_client:
+with SSHClient(ip_address='192.168.100.93', username='dummy', password='dummy') as ssh_client:
     ssh_client.execute_command('ls')
     df_output = ssh_client.execute_command('df -hl')
     ssh_client.reboot()
