@@ -125,6 +125,6 @@ winrm_client = WinRMClient(ip_address='192.168.100.20', username='Dummy', passwo
 ipconfig_output = winrm_client.execute_command('ipconfig')
 winrm_client.execute_command('WmiObject Win32_ComputerSystem', is_power_shell=True)
 winrm_client.get_subkeys_and_entries_for_root_registry_key(RegistryRootKey.HKEY_LOCAL_MACHINE)
-winrm_client.reboot()
-# winrm_client.shutdown(immediately=True)
+# winrm_client.reboot()
+winrm_client.shutdown(immediately=True)
 
