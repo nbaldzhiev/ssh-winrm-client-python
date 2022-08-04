@@ -131,8 +131,9 @@ class SSHClient(BaseClient):
 
     def reboot(self):
         """Reboots the host."""
-        # Rebooting requires the password of the user, so the paramiko shell needs to be used,
-        # instead of execute_command
+        # Rebooting requires interaction with the user (the user needs to enter their password)
+        # so the paramiko shell needs to be used, which allows for sending data to the prompt,
+        # unlike exec_command()
         self.shell.send(str.encode(f'{LinuxCommands.REBOOT.value}\n'))
         self._wait_for_shell_password_prompt()
         # Enter password
@@ -143,8 +144,9 @@ class SSHClient(BaseClient):
 
     def shutdown(self):
         """Shuts down the host."""
-        # Shutting down requires the password of the user, so the paramiko shell needs to be used,
-        # instead of execute_command
+        # Shutting down requires interaction with the user (the user needs to enter their password)
+        # so the paramiko shell needs to be used, which allows for sending data to the prompt,
+        # unlike exec_command()
         self.shell.send(str.encode(f'{LinuxCommands.SHUTDOWN.value}\n'))
         self._wait_for_shell_password_prompt()
         # Enter password
@@ -155,7 +157,7 @@ class SSHClient(BaseClient):
 
 
 # Example calls
-with SSHClient(ip_address='192.168.100.93', username='dummy', password='dummy') as ssh_client:
+with SSHClient(ip_address='192.168.100.10', username='dummy', password='dummy') as ssh_client:
     ssh_client.execute_command('ls')
     df_output = ssh_client.execute_command('df -hl')
     ssh_client.reboot()

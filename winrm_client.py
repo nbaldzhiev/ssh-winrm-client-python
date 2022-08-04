@@ -1,5 +1,4 @@
 """This class contains the implementation of the WinRM client."""
-from __future__ import annotations
 import logging
 
 import winrm
@@ -22,8 +21,8 @@ class WinRMClient(BaseClient):
         self.client = self.log_in()
         logging.info('Successfully logged in host %s!', self.ip_address)
 
-    def log_in(self):
-        """Logs in to the host via WinRM."""
+    def log_in(self) -> winrm.Session:
+        """Logs in to the host via WinRM and returns the created winrm.Session object."""
         try:
             client = winrm.Session(self.ip_address, auth=(self.username, self.password))
         except Exception as e:
@@ -100,6 +99,11 @@ class WinRMClient(BaseClient):
 
         logging.info('Successfully shut down host %s!', self.ip_address)
 
+    def get_windows_defender_parameters(self):
+        """Not implemented due to not understanding well what the goal is and not being able to
+        access Windows Defender from command-line on Windows 7."""
+        raise NotImplementedError
+
     def get_subkeys_and_entries_for_root_registry_key(self, root_key: RegistryRootKey) -> str:
         """Retrieves and returns the subkeys and entries for a given root registry key.
 
@@ -113,14 +117,14 @@ class WinRMClient(BaseClient):
         str
             All subkeys and entries for the given root key.
         """
-        res = self.execute_command(WindowsCommands.REGISTER_QUERY.value + f' {root_key.value}')
-        return res
+        return self.execute_command(WindowsCommands.REGISTER_QUERY.value + f' {root_key.value}')
 
 
 # Example calls
-winrm_client = WinRMClient(ip_address='192.168.100.4', username='Gaming', password='nenko9000')
+winrm_client = WinRMClient(ip_address='192.168.100.20', username='Dummy', password='dummy')
 ipconfig_output = winrm_client.execute_command('ipconfig')
 winrm_client.execute_command('WmiObject Win32_ComputerSystem', is_power_shell=True)
-# winrm_client.reboot()
-winrm_client.shutdown(immediately=True)
+winrm_client.get_subkeys_and_entries_for_root_registry_key(RegistryRootKey.HKEY_LOCAL_MACHINE)
+winrm_client.reboot()
+# winrm_client.shutdown(immediately=True)
 
