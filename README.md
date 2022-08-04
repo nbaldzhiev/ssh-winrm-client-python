@@ -29,6 +29,6 @@ Three modules are created:
 
 It's recommended to create a python virtual environment using Python 3.7.9+ and install the dependencies in the file requirements.txt to ensure that all required packages are available. The projects uses two external packages:
 
-* [paramiko][https://www.paramiko.org/] - providing an SSH client implementation in python;
-* [pywinrm][https://github.com/diyan/pywinrm] - providing a WinRM client implementation in python.
+* [paramiko](https://www.paramiko.org/) - providing an SSH client implementation in python;
+* [pywinrm](https://github.com/diyan/pywinrm) - providing a WinRM client implementation in python.
 
