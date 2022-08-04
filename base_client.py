@@ -16,6 +16,10 @@ class BaseClient(metaclass=ABCMeta):
         pass
 
     @abstractmethod
+    def execute_command(self, command: str):
+        pass
+
+    @abstractmethod
     def reboot(self):
         pass
 
