@@ -1,10 +1,6 @@
-# Acronis Interview Task - WinRM/SSH client
+# WinRM/SSH client in Python
 
-A repository containing my solution to the home coding interview task given as part of the Senior Python Developer in Test (Advanced Management) position:
-
-## Task Description
-
-Python home task:
+## Description
 
  We have a windows-based machine with enabled WinRM and a linux-based machine with enabled ssh. Need to create base class which have IP address property and child classes which will manage machines over ssh or WinRM with the following
 
